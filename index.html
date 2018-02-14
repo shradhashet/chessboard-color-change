@@ -1,0 +1,191 @@
+<!-- Enter your HTML code here -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style type="text/css">
+    .container {
+        margin: 0 auto;
+        position: absolute;
+        left: 35%;
+    }
+
+    .container #chess-board {
+        padding-bottom: 40px;
+        float: left;
+    }
+
+    .container #chess-board div {
+        border: 1px solid black;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 90px;
+    }
+
+   #chess-board .black {
+        background-color: black;
+        width: 100px;
+        height: 100px;
+        float: left;
+        color: #fff;
+    }
+
+   #chess-board .white {
+        background-color: white;
+        width: 100px;
+        height: 100px;
+        float: left;
+        color: #000;
+    }
+    
+    #chess-board .clear {
+        clear: both
+    }
+    .container .compute{
+       float: left;
+       clear: both
+   }
+
+   header {
+    height: 100px;
+    background-color: #4286f4;
+    margin: 0 0 30px 0;
+    padding: 0;
+    color: #fff;
+  }
+
+header h1 {
+    text-align: center;
+    vertical-align: middle;
+    line-height: 90px;
+    margin: 0;
+}
+.container form p label {
+    display:block;
+    float:left;
+    width:130px;
+}
+
+.container form input{
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #676767;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    box-sizing: border-box
+}
+.container input[type="text"]:focus {
+    outline-color: #F47B08;
+}
+
+.container form #submit{
+    color: #f9f9f9;
+    background-color:#F47B08;
+    border-color: #1a4860;\
+    font-weight: 600;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    margin-left: 45%;
+}
+
+.container form h2{
+    text-align: center;
+    color:#F47B08;
+}
+</style>
+</head>
+
+<body>
+
+    <header>
+        <h1> COLOR ME</h1>
+    </header>
+    <div class="container">
+        <div id='chess-board'></div>
+        <div class="compute">
+            <form name="myForm">
+                <h2>Apply Color</h2>
+                <p>
+                    <label><b>Enter the Number <b></label>
+                        <input type="text" name="boardNum" value="" />
+                    </p>
+                    <p>    
+                        <label><b>Enter the Color</b></label>
+                        <input type="text" name="color" value="" />
+                    </p>
+                    <p>
+                        <button id="submit" onClick=changeColor();>submit</button>
+                    </p>
+                </form>
+            </div>
+        </div>
+        <script type="text/javascript">
+            var chessBord = document.getElementById('chess-board');
+            var classNames = ["white", "black"];
+            var styleAddedEle;
+            for (var i = 0; i < 16; i++) {
+                var square = document.createElement("div");
+                square.setAttribute('id',i+1);
+                square.innerHTML = i + 1;
+                if (i && i % 4 === 0) {
+                    classNames.reverse();
+                    square.className = "clear "
+                }
+                square.className += (i % 2 === 0) ? classNames[0] : classNames[1];
+                chessBord.appendChild(square);
+
+            }
+
+            function changeColor() {
+                event.preventDefault();
+                var color = document.forms["myForm"]["color"].value,
+                boardNum = document.forms["myForm"]["boardNum"].value,
+                isValid = validation(color,boardNum);
+
+                if(isValid){
+
+                          //resetting style added
+                          if(styleAddedEle !== undefined){
+                             resetStyle(styleAddedEle);
+                         }
+                         styleAddedEle = document.getElementById(boardNum);
+                         styleAddedEle.setAttribute("style","background-color:"+color +"");
+
+                     }
+
+                 }
+                 function resetStyle(styleAddedEle){
+                    styleAddedEle.removeAttribute("style");
+                }
+
+                function validation(color,boardNum) {
+
+                    if (color == "") {
+                        alert("color must be filled out");
+                        return false;
+                    }else if (boardNum == "") {
+                        alert("board Num must be filled out");
+                        return false;
+                    }else if (color.charAt(0) !== "") {
+                      if(/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(color)){
+                        return true;
+                    }else{
+                        alert("Enter correct Hex-Color Code");
+                        return false;
+                    }
+                }else{
+
+                    return true;
+                }
+
+            }
+        </script>
+
+    </body>
+
+    </html>
